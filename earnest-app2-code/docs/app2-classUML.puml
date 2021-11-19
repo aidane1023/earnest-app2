@@ -27,6 +27,9 @@ class Controller {
     - Button clear
     - Button search
     - MenuButton sort
+    - MenuButton manual
+    - MenuButton load
+    - MenuButton save
     - TextField serialNumber
     - TextField name
     - TextField value
@@ -64,5 +67,8 @@ class Item {
     + setName()
     + setValue()
     + Item(serialNumber, name, value)
+    + add()
+    + delete()
+    + edit()
 }
 @enduml
