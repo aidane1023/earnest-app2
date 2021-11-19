@@ -3,13 +3,10 @@
  *  Copyright 2021 aidan earnest
  */
 
-import javafx.scene.control.TextField;
-import org.w3c.dom.Text;
-
 public class Item {
     private String serialNumber; // format as A-XXX-XXX-XXX
     private String name;
-    private Double value; // format as $XX.XX
+    private Double price; // format as $XX.XX
 
     public String getSerialNumber() {
         return serialNumber;
@@ -27,18 +24,18 @@ public class Item {
         this.name = name;
     }
 
-    public double getValue() {
-        return value;
+    public double getPrice() {
+        return price;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public Item(String serialNumber, String name, Double value) {
+    public Item(String serialNumber, String name, Double price) {
         this.setSerialNumber(serialNumber);
         this.setName(name);
-        this.setValue(value);
+        this.setPrice(price);
     }
 
     public void add() {
@@ -80,7 +77,22 @@ public class Item {
     }
 
     public void edit() {
+        Controller controller = new Controller();
+        ErrorMessage errorCheck = new ErrorMessage();
         //Requires a selection
-        //Fills fields with components from selection
+        //Fill event fields
+        try {
+            //Convert double back to string
+            double tempDouble = controller.inventoryList.get(controller.List.getSelectionModel().getSelectedIndex()).getPrice();
+            String tempString = Double.toString(tempDouble);
+
+            controller.serialNumberField.setText(controller.inventoryList.get(controller.List.getSelectionModel().getSelectedIndex()).getSerialNumber());
+            controller.nameField.setText(controller.inventoryList.get(controller.List.getSelectionModel().getSelectedIndex()).getName());
+            controller.valueField.setText(tempString);
+            controller.editorGate = true;
+        } catch (Exception e) {
+            System.out.println("No Selection");
+            errorCheck.invalidSelection();
+        }
     }
 }

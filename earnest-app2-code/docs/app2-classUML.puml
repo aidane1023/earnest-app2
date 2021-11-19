@@ -35,6 +35,8 @@ class Controller {
     - TextField value
     - TableView<Item> List
     - ObservableTable<Item> inventoryList
+    - Boolean editorGate
+
 }
 
 class FileManagement {

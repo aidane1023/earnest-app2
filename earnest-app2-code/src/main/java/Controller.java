@@ -44,6 +44,8 @@ public class Controller {
     @FXML
     ObservableList<Item> inventoryList;
 
+    Boolean editorGate;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Set all necessary visual adjustments
