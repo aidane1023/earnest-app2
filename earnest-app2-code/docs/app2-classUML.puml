@@ -12,6 +12,7 @@ InventoryManagementApplication -- Controller
 Controller -- List
 Controller -- Item
 Item -- ErrorMessage
+List -- ErrorMessage
 Controller -- FileManagement
 
 
@@ -36,7 +37,16 @@ class Controller {
     - TableView<Item> List
     - ObservableTable<Item> inventoryList
     - Boolean editorGate
-
+    + newItem()
+    + deleteItem()
+    + editItem()
+    + clearList()
+    + searchList()
+    + sortList()
+    + manual()
+    + saveList()
+    + loadList()
+    + refresh()
 }
 
 class FileManagement {
