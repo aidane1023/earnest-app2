@@ -55,64 +55,81 @@ public class Controller {
     //Allows for easier testing while only needing one class to control GUI
 
     public void newItem (ActionEvent actionEvent) {
-        Item item = new Item(null, null, null);
-
+        Item item = new Item(null, null, 0.0);
         //Call add function from Item
         item.add();
-        //Else update table and List
+        //Update fields
         refresh();
     }
     public void deleteItem(ActionEvent actionEvent) {
-        Item item = new Item(null, null, null);
-
+        Item item = new Item(null, null, 0.0);
         //Call delete function from Item class
         item.delete();
-        //Update table
+        //Update fields
         refresh();
     }
 
     public void editItem(ActionEvent actionEvent) {
-        Item item = new Item(null, null, null);
-
+        Item item = new Item(null, null, 0.0);
         //Call edit function from Item class
         item.edit();
-        //Update table
+        //Update fields
         refresh();
     }
 
-    public void clearList() {
+    public void clearList(ActionEvent actionEvent) {
+        List list = new List(null);
         //Call clear function from List class
-        //Update table
+        list.clear();
     }
 
-    public void searchList() {
+    public void searchList(ActionEvent actionEvent) {
+        List list = new List(null);
         //Call search function from List class
-        //Update table
+        list.search();
     }
 
-    public void sortList() {
-        //Take menuItem selection as parameter
-        //Use parameter in call for sort from List class
-        //Update table
+    public void sortAZ(ActionEvent actionEvent) {
+        //Pass parameter a-z
+        sortList("AZ");
     }
 
-    public void manual() {
+    public void sort321(ActionEvent actionEvent) {
+        //Pass parameter 321
+        sortList("321");
+    }
+
+    public void sortSerial(ActionEvent actionEvent) {
+        //Pass parameter serial
+        sortList("Serial");
+    }
+
+    public void manual(ActionEvent actionEvent) {
         //Open Manual
     }
 
-    public void saveList() {
-        //Call save function from List class
-        //Update table
+    public void saveList(ActionEvent actionEvent) {
+        FileManagement file = new FileManagement();
+        //Call search function from fileManagement class
+        file.save();
     }
 
-    public void loadList() {
-        //Call load function from List class
-        //Update table
+    public void loadList(ActionEvent actionEvent) {
+        FileManagement file = new FileManagement();
+        //Call search function from fileManagement class
+        file.save();
     }
 
     private void refresh() {
         serialNumberField.setText(null);
         nameField.setText(null);
         valueField.setText(null);
+    }
+
+    public void sortList(String parameter) {
+        List list = new List(null);
+        //Take menuItem selection as parameter
+        //Use parameter in call for sort from List class
+        list.sort(parameter);
     }
 }

@@ -23,7 +23,7 @@ public class List {
         //Update observable table
     }
 
-    public void sort() {
+    public void sort(String parameter) {
         //Take in selected sort order from GUI
         //Sort List to meet selection
         //Update observable table
