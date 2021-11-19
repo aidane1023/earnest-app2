@@ -1,0 +1,68 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class InventoryManagementApplication
+class Controller
+class List
+class Item
+class ErrorMessage
+class FileManagement
+
+InventoryManagementApplication -- Controller
+Controller -- List
+Controller -- Item
+Controller -- ErrorMessage
+Controller -- FileManagement
+List *-- Item
+
+class InventoryManagementApplication {
+    + void start(Stage stage)
+    + static void main(String[] args)
+}
+
+class Controller {
+    - Button add
+    - Button delete
+    - Button edit
+    - Button clear
+    - Button search
+    - MenuButton sort
+    - TextField serialNumber
+    - TextField name
+    - TextField value
+    - TableView<Item> List
+    - ObservableTable<Item> inventoryList
+}
+
+class FileManagement {
+    save()
+    load()
+}
+
+class ErrorMessage {
+    invalidInput()
+}
+
+class List {
+    - Item[] inventory
+    + getInventory()
+    + setInventory()
+    + List(inventory)
+    + sort()
+    + search()
+    + clear()
+}
+
+class Item {
+    - String serialNumber
+    - String name
+    - Double value
+    + getSerialNumber()
+    + getName()
+    + getValue()
+    + setSerialNumber()
+    + setName()
+    + setValue()
+    + Item(serialNumber, name, value)
+}
+@enduml
