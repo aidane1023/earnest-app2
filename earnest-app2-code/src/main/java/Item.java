@@ -3,6 +3,9 @@
  *  Copyright 2021 aidan earnest
  */
 
+import javafx.scene.control.TextField;
+import org.w3c.dom.Text;
+
 public class Item {
     private String serialNumber; // format as A-XXX-XXX-XXX
     private String name;
@@ -39,10 +42,28 @@ public class Item {
     }
 
     public void add() {
+        Controller controller = new Controller();
+        ErrorMessage errorCheck = new ErrorMessage();
         //Take in items from textFields
-        //Confirm items meet restraints (else run errorMessage)
-        //Add item to List class
-        //Display item in observable table view
+        //Add event to list view
+        if (controller.inventoryList.size() <= 1024) {
+            controller.serialNumberField.setText(controller.serialNumberField.getText());
+            controller.nameField.setText(controller.nameField.getText());
+            controller.valueField.setText(controller.valueField.getText());
+
+            //Make Temp variables for easier conversions
+            String tempSerialNumber = controller.serialNumberField.getText();
+            String tempName = controller.nameField.getText();
+            //Convert value from text to double
+            Double tempValue = Double.parseDouble(controller.valueField.getText());
+
+            //Confirm items meet restraints (else run errorMessage)
+            if (errorCheck.invalidInputCheck()) {
+                //Display item in observable table view
+                controller.inventoryList.add(new Item(tempSerialNumber, tempName, tempValue));
+                controller.List.setItems(controller.inventoryList);
+            }
+        }
     }
 
     public void delete() {

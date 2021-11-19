@@ -11,9 +11,9 @@ class FileManagement
 InventoryManagementApplication -- Controller
 Controller -- List
 Controller -- Item
-Controller -- ErrorMessage
+Item -- ErrorMessage
 Controller -- FileManagement
-List *-- Item
+
 
 class InventoryManagementApplication {
     + void start(Stage stage)
@@ -43,7 +43,7 @@ class FileManagement {
 }
 
 class ErrorMessage {
-    invalidInput()
+    invalidInputCheck()
 }
 
 class List {

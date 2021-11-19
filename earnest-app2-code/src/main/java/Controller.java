@@ -34,11 +34,11 @@ public class Controller {
     @FXML
     MenuButton save;
     @FXML
-    TextField serialNumber;
+    TextField serialNumberField;
     @FXML
-    TextField name;
+    TextField nameField;
     @FXML
-    TextField value;
+    TextField valueField;
     @FXML
     TableView<Item> List;
     @FXML

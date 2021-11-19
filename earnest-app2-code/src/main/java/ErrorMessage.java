@@ -4,9 +4,10 @@
  */
 
 public class ErrorMessage {
-    public void invalidInput() {
+    public Boolean invalidInputCheck() {
         //Present a popup informing user that an invalid input was used
         //Cancel all following actions
         //Require user to input valid inputs before proceeding
+        return true;
     }
 }
