@@ -46,7 +46,7 @@ public class Controller {
 
     Boolean editorGate;
 
-    @Override
+
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Set all necessary visual adjustments
     }
@@ -54,21 +54,30 @@ public class Controller {
     //Controller will contain all call parameters
     //Allows for easier testing while only needing one class to control GUI
 
-    public void newItem () {
-        //Collect data from textFileds
+    public void newItem (ActionEvent actionEvent) {
+        Item item = new Item(null, null, null);
+
         //Call add function from Item
-        //Check against format parameters
-        //If fails check call error message
+        item.add();
         //Else update table and List
+        refresh();
     }
-    public void deleteItem() {
+    public void deleteItem(ActionEvent actionEvent) {
+        Item item = new Item(null, null, null);
+
         //Call delete function from Item class
+        item.delete();
         //Update table
+        refresh();
     }
 
-    public void editItem() {
+    public void editItem(ActionEvent actionEvent) {
+        Item item = new Item(null, null, null);
+
         //Call edit function from Item class
+        item.edit();
         //Update table
+        refresh();
     }
 
     public void clearList() {
@@ -99,5 +108,11 @@ public class Controller {
     public void loadList() {
         //Call load function from List class
         //Update table
+    }
+
+    private void refresh() {
+        serialNumberField.setText(null);
+        nameField.setText(null);
+        valueField.setText(null);
     }
 }
