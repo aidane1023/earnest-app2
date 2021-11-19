@@ -10,4 +10,8 @@ public class ErrorMessage {
         //Require user to input valid inputs before proceeding
         return true;
     }
+
+    public void invalidSelection() {
+        //Present a popup error when no selection is made
+    }
 }

@@ -67,9 +67,16 @@ public class Item {
     }
 
     public void delete() {
-        //Requires a selection
-        //Delete selected Item from List class
-        //Delete selected item from observable table
+        Controller controller = new Controller();
+        ErrorMessage errorCheck = new ErrorMessage();
+        //Ensure an event is selected
+        try {
+            //Remove event from list
+            controller.inventoryList.remove(controller.List.getSelectionModel().getSelectedItem());
+        } catch(Exception e) {
+            System.out.println("No selection");
+            errorCheck.invalidSelection();
+        }
     }
 
     public void edit() {
