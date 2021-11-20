@@ -9,7 +9,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.security.auth.callback.Callback;
 import java.io.FileWriter;
 import java.net.URL;
 import java.util.*;
@@ -40,9 +42,17 @@ public class Controller {
     @FXML
     TextField valueField;
     @FXML
-    TableView<Item> List;
+    TableView<Item> table;
     @FXML
-    ObservableList<Item> inventoryList;
+    TableColumn<Item, String> serialColumn;
+    @FXML
+    TableColumn<Item, String> nameColumn;
+    @FXML
+    TableColumn<Item, Double> valueColumn;
+
+    ObservableList<Item> inventoryList = FXCollections.observableArrayList(
+            new Item("A-123-456-789", "Test", 100.00)
+    );
 
     Boolean editorGate;
 

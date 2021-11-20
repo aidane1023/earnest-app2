@@ -43,7 +43,7 @@ public class Item {
         ErrorMessage errorCheck = new ErrorMessage();
         //Take in items from textFields
         //Add event to list view
-        if (controller.inventoryList.size() <= 1024) {
+        if (controller.inventoryList.size() < 1024) {
             controller.serialNumberField.setText(controller.serialNumberField.getText());
             controller.nameField.setText(controller.nameField.getText());
             controller.valueField.setText(controller.valueField.getText());
@@ -58,7 +58,7 @@ public class Item {
             if (errorCheck.invalidInputCheck()) {
                 //Display item in observable table view
                 controller.inventoryList.add(new Item(tempSerialNumber, tempName, tempValue));
-                controller.List.setItems(controller.inventoryList);
+                controller.table.setItems(controller.inventoryList);
             }
         }
     }
@@ -69,7 +69,7 @@ public class Item {
         //Ensure an event is selected
         try {
             //Remove event from list
-            controller.inventoryList.remove(controller.List.getSelectionModel().getSelectedItem());
+            controller.inventoryList.remove(controller.table.getSelectionModel().getSelectedItem());
         } catch(Exception e) {
             System.out.println("No selection");
             errorCheck.invalidSelection();
@@ -83,11 +83,11 @@ public class Item {
         //Fill event fields
         try {
             //Convert double back to string
-            double tempDouble = controller.inventoryList.get(controller.List.getSelectionModel().getSelectedIndex()).getPrice();
+            double tempDouble = controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getPrice();
             String tempString = Double.toString(tempDouble);
 
-            controller.serialNumberField.setText(controller.inventoryList.get(controller.List.getSelectionModel().getSelectedIndex()).getSerialNumber());
-            controller.nameField.setText(controller.inventoryList.get(controller.List.getSelectionModel().getSelectedIndex()).getName());
+            controller.serialNumberField.setText(controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getSerialNumber());
+            controller.nameField.setText(controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getName());
             controller.valueField.setText(tempString);
             controller.editorGate = true;
         } catch (Exception e) {
