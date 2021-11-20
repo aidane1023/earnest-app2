@@ -59,15 +59,36 @@ public class Controller {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Set all necessary visual adjustments
+        serialColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("serialNumber"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        valueColumn.setCellValueFactory(new PropertyValueFactory<Item, Double>("price"));
     }
 
     //Controller will contain all call parameters
     //Allows for easier testing while only needing one class to control GUI
 
     public void newItem (ActionEvent actionEvent) {
-        Item item = new Item(null, null, 0.0);
-        //Call add function from Item
-        item.add();
+        ErrorMessage errorCheck = new ErrorMessage();
+        //Take in items from textFields
+        //Add event to TableView
+        if (inventoryList.size() < 1024) {
+            serialNumberField.setText(serialNumberField.getText());
+            nameField.setText(nameField.getText());
+            valueField.setText(valueField.getText());
+
+            //Make Temp variables for easier conversions
+            String tempSerialNumber = serialNumberField.getText();
+            String tempName = nameField.getText();
+            //Convert value from text to double
+            Double tempValue = Double.parseDouble(valueField.getText());
+
+            //Confirm items meet restraints (else run errorMessage)
+            if (errorCheck.invalidInputCheck()) {
+                //Display item in observable table view
+                inventoryList.add(new Item(tempSerialNumber, tempName, tempValue));
+                table.getItems().add(new Item(tempSerialNumber, tempName, tempValue));
+            }
+        }
         //Update fields
         refresh();
     }
