@@ -79,7 +79,7 @@ public class Item {
 
             controller.serialNumberField.setText(controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getSerialNumber());
             controller.nameField.setText(controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getName());
-            controller.valueField.setText(controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getValue());
+            controller.valueField.setText((controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getValue()));
             controller.editorGate = true;
         } catch (Exception e) {
             System.out.println("No Selection");

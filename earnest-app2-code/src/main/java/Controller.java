@@ -76,13 +76,14 @@ public class Controller implements Initializable{
             //Make Temp variables for easier conversions
             String tempSerialNumber = serialNumberField.getText();
             String tempName = nameField.getText();
-            String tempValue = valueField.getText();
+            double tempDouble = Double.parseDouble(valueField.getText());
 
             //Confirm items meet restraints (else run errorMessage)
             if (errorCheck.invalidInputCheck()) {
+                String tempValue = String.format("$%.2f", tempDouble);
                 //Display item in observable table view
                 inventoryList.add(new Item(tempSerialNumber, tempName, tempValue));
-                table.getItems().add(new Item(tempSerialNumber, tempName, "$"+tempValue));
+                table.setItems(inventoryList);
             }
         }
         //Update fields
@@ -106,8 +107,19 @@ public class Controller implements Initializable{
 
     public void editItem(ActionEvent actionEvent) {
         Item item = new Item(null, null, null);
-        //Call edit function from Item class
-        item.edit();
+        ErrorMessage errorCheck = new ErrorMessage();
+        //Requires a selection
+        //Fill event fields
+        try {
+            serialNumberField.setText(table.getItems().get(table.getSelectionModel().getSelectedIndex()).getSerialNumber());
+            serialNumberField.setText(inventoryList.get(table.getSelectionModel().getSelectedIndex()).getSerialNumber());
+            nameField.setText(inventoryList.get(table.getSelectionModel().getSelectedIndex()).getName());
+            valueField.setText((inventoryList.get(table.getSelectionModel().getSelectedIndex()).getValue()));
+            editorGate = true;
+        } catch (Exception e) {
+            System.out.println("No Selection");
+            errorCheck.invalidSelection();
+        }
         //Update fields
         refresh();
     }
