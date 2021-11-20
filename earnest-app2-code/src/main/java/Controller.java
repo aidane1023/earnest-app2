@@ -11,12 +11,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javax.security.auth.callback.Callback;
-import java.io.FileWriter;
+
 import java.net.URL;
 import java.util.*;
 
-public class Controller {
+public class Controller implements Initializable{
     @FXML
     Button add;
     @FXML
@@ -36,32 +35,30 @@ public class Controller {
     @FXML
     MenuButton save;
     @FXML
-    TextField serialNumberField;
+    TextField serialNumberField = new TextField();
     @FXML
-    TextField nameField;
+    TextField nameField = new TextField();
     @FXML
-    TextField valueField;
+    TextField valueField = new TextField();
     @FXML
     TableView<Item> table;
     @FXML
-    TableColumn<Item, String> serialColumn;
+    TableColumn<Item, String> serialColumn = new TableColumn<>();
     @FXML
-    TableColumn<Item, String> nameColumn;
+    TableColumn<Item, String> nameColumn = new TableColumn<>();
     @FXML
-    TableColumn<Item, Double> valueColumn;
+    TableColumn<Item, Double> valueColumn = new TableColumn<>();
 
-    ObservableList<Item> inventoryList = FXCollections.observableArrayList(
-            new Item("A-123-456-789", "Test", 100.00)
-    );
+    ObservableList<Item> inventoryList = FXCollections.observableArrayList();
 
     Boolean editorGate;
 
-
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Set all necessary visual adjustments
         serialColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("serialNumber"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-        valueColumn.setCellValueFactory(new PropertyValueFactory<Item, Double>("price"));
+        valueColumn.setCellValueFactory(new PropertyValueFactory<Item, Double>("value"));
     }
 
     //Controller will contain all call parameters
@@ -70,7 +67,7 @@ public class Controller {
     public void newItem (ActionEvent actionEvent) {
         ErrorMessage errorCheck = new ErrorMessage();
         //Take in items from textFields
-        //Add event to TableView
+        //Add item to TableView
         if (inventoryList.size() < 1024) {
             serialNumberField.setText(serialNumberField.getText());
             nameField.setText(nameField.getText());
@@ -79,29 +76,36 @@ public class Controller {
             //Make Temp variables for easier conversions
             String tempSerialNumber = serialNumberField.getText();
             String tempName = nameField.getText();
-            //Convert value from text to double
-            Double tempValue = Double.parseDouble(valueField.getText());
+            String tempValue = valueField.getText();
 
             //Confirm items meet restraints (else run errorMessage)
             if (errorCheck.invalidInputCheck()) {
                 //Display item in observable table view
                 inventoryList.add(new Item(tempSerialNumber, tempName, tempValue));
-                table.getItems().add(new Item(tempSerialNumber, tempName, tempValue));
+                table.getItems().add(new Item(tempSerialNumber, tempName, "$"+tempValue));
             }
         }
         //Update fields
         refresh();
     }
+
     public void deleteItem(ActionEvent actionEvent) {
-        Item item = new Item(null, null, 0.0);
-        //Call delete function from Item class
-        item.delete();
+        ErrorMessage errorCheck = new ErrorMessage();
+        //Ensure an event is selected
+        try {
+            //Remove event from list
+            inventoryList.remove(table.getSelectionModel().getSelectedItem());
+            table.getItems().remove(table.getSelectionModel().getSelectedItem());
+        } catch(Exception e) {
+            System.out.println("No selection");
+            errorCheck.invalidSelection();
+        }
         //Update fields
         refresh();
     }
 
     public void editItem(ActionEvent actionEvent) {
-        Item item = new Item(null, null, 0.0);
+        Item item = new Item(null, null, null);
         //Call edit function from Item class
         item.edit();
         //Update fields

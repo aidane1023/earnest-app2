@@ -3,10 +3,14 @@
  *  Copyright 2021 aidan earnest
  */
 
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TextField;
+import org.w3c.dom.Text;
+
 public class Item {
     private String serialNumber; // format as A-XXX-XXX-XXX
     private String name;
-    private Double price; // format as $XX.XX
+    private String value; // format as $XX.XX
 
     public String getSerialNumber() {
         return serialNumber;
@@ -24,41 +28,31 @@ public class Item {
         this.name = name;
     }
 
-    public double getPrice() {
-        return price;
+    public String getValue() {
+        return value;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public Item(String serialNumber, String name, Double price) {
+    public Item(String serialNumber, String name, String value) {
         this.setSerialNumber(serialNumber);
         this.setName(name);
-        this.setPrice(price);
+        this.setValue(value);
     }
 
-    public void add() {
+    public void add(String serialField, String nameField, String valueField) {
         Controller controller = new Controller();
         ErrorMessage errorCheck = new ErrorMessage();
         //Take in items from textFields
-        //Add event to list view
+        //Add item to TableView if under the size limit
         if (controller.inventoryList.size() < 1024) {
-            controller.serialNumberField.setText(controller.serialNumberField.getText());
-            controller.nameField.setText(controller.nameField.getText());
-            controller.valueField.setText(controller.valueField.getText());
-
-            //Make Temp variables for easier conversions
-            String tempSerialNumber = controller.serialNumberField.getText();
-            String tempName = controller.nameField.getText();
-            //Convert value from text to double
-            Double tempValue = Double.parseDouble(controller.valueField.getText());
-
             //Confirm items meet restraints (else run errorMessage)
             if (errorCheck.invalidInputCheck()) {
                 //Display item in observable table view
-                controller.inventoryList.add(new Item(tempSerialNumber, tempName, tempValue));
-                controller.table.setItems(controller.inventoryList);
+                controller.inventoryList.add(new Item(serialField, nameField, valueField));
+                controller.table.getItems().add(new Item(serialField, nameField, valueField));
             }
         }
     }
@@ -82,13 +76,10 @@ public class Item {
         //Requires a selection
         //Fill event fields
         try {
-            //Convert double back to string
-            double tempDouble = controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getPrice();
-            String tempString = Double.toString(tempDouble);
 
             controller.serialNumberField.setText(controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getSerialNumber());
             controller.nameField.setText(controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getName());
-            controller.valueField.setText(tempString);
+            controller.valueField.setText(controller.inventoryList.get(controller.table.getSelectionModel().getSelectedIndex()).getValue());
             controller.editorGate = true;
         } catch (Exception e) {
             System.out.println("No Selection");

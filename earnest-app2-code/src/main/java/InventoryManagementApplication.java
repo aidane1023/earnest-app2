@@ -16,7 +16,7 @@ public class InventoryManagementApplication extends javafx.application.Applicati
         Parent root =
                 FXMLLoader.load(Objects.requireNonNull(getClass().getResource("InventoryManagerGUI.fxml")));
         Scene scene = new Scene(root);
-        stage.setTitle("Todo List Editor");
+        stage.setTitle("Inventory Manager");
         stage.setScene(scene);
         stage.show();
     }
