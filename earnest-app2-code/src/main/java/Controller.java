@@ -55,7 +55,7 @@ public class Controller implements Initializable{
 
     ObservableList<Item> inventoryList = FXCollections.observableArrayList();
 
-    Boolean editorGate;
+    Boolean editorGate = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -82,10 +82,16 @@ public class Controller implements Initializable{
 
             //Confirm items meet restraints (else run errorMessage)
             if (errorCheck.invalidInputCheck()) {
-                //Display item in observable table view
-                inventoryList.add(new Item(tempSerialNumber, tempName, String.format("%.2f",tempDouble)));
-                String tempValue = String.format("$%.2f", tempDouble);
-                table.getItems().add(new Item(tempSerialNumber, tempName, tempValue));
+                if (!editorGate) {
+                    //Display item in observable table view
+                    inventoryList.add(new Item(tempSerialNumber, tempName, String.format("%.2f",tempDouble)));
+                    String tempValue = String.format("$%.2f", tempDouble);
+                    table.setItems(inventoryList);
+                } else {
+                    inventoryList.set(table.getSelectionModel().getSelectedIndex(), new Item(serialNumberField.getText(), nameField.getText(), valueField.getText()));
+                    table.setItems(inventoryList);
+                    editorGate = false;
+                }
             }
         }
         //Update fields
@@ -125,13 +131,20 @@ public class Controller implements Initializable{
     public void clearList(ActionEvent actionEvent) {
         List list = new List(null);
         //Call clear function from List class
-        list.clear();
+        emptyList();
     }
 
     public void searchList(ActionEvent actionEvent) {
-        List list = new List(null);
-        //Call search function from List class
-        list.search();
+        ObservableList<Item> contains = FXCollections.observableArrayList();
+        //Take in textFields as parameters
+        //Search list for all that contain those aspects
+        //Display ones containing those aspects
+        for (Item item : inventoryList) {
+            if (item.getSerialNumber().contains(serialNumberField.getText()) || item.getName().contains(nameField.getText()) || item.getValue().contains(valueField.getText())) {
+                contains.add(new Item(item.getSerialNumber(), item.getName(), item.getValue()));
+            }
+        }
+        table.setItems(contains);
     }
 
     public void sortAZ(ActionEvent actionEvent) {
@@ -169,6 +182,13 @@ public class Controller implements Initializable{
         serialNumberField.setText(null);
         nameField.setText(null);
         valueField.setText(null);
+    }
+
+    public void emptyList() {
+        //Clear all events from list
+        inventoryList.remove(0, inventoryList.size());
+        //Update display
+        table.setItems(inventoryList);
     }
 
     public void sortList(String parameter) {
