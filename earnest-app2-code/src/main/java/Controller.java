@@ -3,17 +3,26 @@
  *  Copyright 2021 aidan earnest
  */
 
+import javafx.application.HostServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.ResourceBundle;
 
 public class Controller implements Initializable{
     @FXML
@@ -63,7 +72,6 @@ public class Controller implements Initializable{
         serialColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-
     }
 
     //Controller will contain all call parameters
@@ -137,15 +145,27 @@ public class Controller implements Initializable{
 
     public void searchList(ActionEvent actionEvent) {
         ObservableList<Item> contains = FXCollections.observableArrayList();
+        //Account for blank fields
         //Take in textFields as parameters
-        //Search list for all that contain those aspects
-        //Display ones containing those aspects
+        //Search for all items that contain data
         for (Item item : inventoryList) {
-            if (item.getSerialNumber().contains(serialNumberField.getText()) || item.getName().contains(nameField.getText()) || item.getValue().contains(valueField.getText())) {
+            //Serial number contains check
+            if (serialNumberField.getText() != null && item.getSerialNumber().contains(serialNumberField.getText())) {
+                contains.add(new Item(item.getSerialNumber(), item.getName(), item.getValue()));
+            }
+            //Name contains check
+            else if (nameField.getText() != null && item.getName().contains(nameField.getText())) {
+                contains.add(new Item(item.getSerialNumber(), item.getName(), item.getValue()));
+            }
+            //Value contains check
+            else if (valueField.getText() != null && item.getValue().contains(valueField.getText())); {
                 contains.add(new Item(item.getSerialNumber(), item.getName(), item.getValue()));
             }
         }
+        //Update table
         table.setItems(contains);
+        //Update textFields
+        refresh();
     }
 
     public void sortAZ(ActionEvent actionEvent) {
@@ -185,8 +205,19 @@ public class Controller implements Initializable{
         table.setItems(serialSort);
     }
 
+
     public void manual(ActionEvent actionEvent) {
         //Open Manual
+        URL resource = getClass().getResource("User's Manual.pdf");
+        if (Desktop.isDesktopSupported()) {
+            try {
+                assert resource != null;
+                Desktop.getDesktop().open(Paths.get(resource.toURI()).toFile());
+            } catch (IOException | URISyntaxException ex) {
+                // no application registered for PDFs
+            }
+        }
+
     }
 
     public void saveList(ActionEvent actionEvent) {
@@ -214,11 +245,4 @@ public class Controller implements Initializable{
         table.setItems(inventoryList);
     }
 
-
-    public void sortList(String parameter) {
-        List list = new List(null);
-        //Take menuItem selection as parameter
-        //Use parameter in call for sort from List class
-        list.sort(parameter);
-    }
 }
