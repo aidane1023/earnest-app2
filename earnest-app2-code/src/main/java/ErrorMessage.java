@@ -24,11 +24,6 @@ public class ErrorMessage {
         return serialFormat(serialNumber) && name.length() >= 2 && name.length() <= 256 && value >= 0;
     }
 
-    public void invalidSelection() {
-        //Present a popup error when no selection is made
-        SelectionPopup.display();
-    }
-
     private boolean serialFormat(String serialNumber) {
             if (serialNumber.length() == 13) {
                 return serialNumber.matches("[a-zA-Z]-[a-zA-Z_0-9]+-[a-zA-Z_0-9]+-[a-zA-Z_0-9]+");

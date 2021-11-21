@@ -4,6 +4,7 @@
  */
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 public class Item {
     private String serialNumber; // format as A-XXX-XXX-XXX
@@ -64,7 +65,6 @@ public class Item {
             controller.inventoryList.remove(controller.table.getSelectionModel().getSelectedItem());
         } catch(Exception e) {
             System.out.println("No selection");
-            errorCheck.invalidSelection();
         }
     }
 
@@ -81,7 +81,16 @@ public class Item {
             controller.editorGate = true;
         } catch (Exception e) {
             System.out.println("No Selection");
-            errorCheck.invalidSelection();
         }
+    }
+
+    public String toStringTab() {
+        //Format list view
+        return (this.getSerialNumber() + "\t" + this.getName() + "\t" + this.getValue());
+    }
+
+    @Override
+    public String toString(){
+        return (this.getSerialNumber() + " " + this.getName() + " " + this.getValue());
     }
 }

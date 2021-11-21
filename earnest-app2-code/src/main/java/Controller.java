@@ -66,9 +66,6 @@ public class Controller implements Initializable{
 
     ObservableList<Item> inventoryList = FXCollections.observableArrayList();
 
-    @FXML
-    FileChooser fileChooser = new FileChooser();
-
     Boolean editorGate = false;
 
     @Override
@@ -77,8 +74,6 @@ public class Controller implements Initializable{
         serialColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-
-        fileChooser.setInitialDirectory(new File("src\\main\\resources"));
     }
 
     //Controller will contain all call parameters
@@ -124,7 +119,6 @@ public class Controller implements Initializable{
     }
 
     public void deleteItem(ActionEvent actionEvent) {
-        ErrorMessage errorCheck = new ErrorMessage();
         //Ensure an event is selected
         try {
             //Remove event from list
@@ -132,14 +126,12 @@ public class Controller implements Initializable{
             table.getItems().remove(table.getSelectionModel().getSelectedItem());
         } catch(Exception e) {
             System.out.println("No selection");
-            errorCheck.invalidSelection();
         }
         //Update fields
         refresh();
     }
 
     public void editItem(ActionEvent actionEvent) {
-        ErrorMessage errorCheck = new ErrorMessage();
         //Requires a selection
         //Fill event fields
         try {
@@ -150,7 +142,6 @@ public class Controller implements Initializable{
             editorGate = true;
         } catch (Exception e) {
             System.out.println("No Selection");
-            errorCheck.invalidSelection();
         }
     }
 
@@ -237,26 +228,16 @@ public class Controller implements Initializable{
 
     }
 
-    @FXML
     public void saveList(ActionEvent actionEvent) {
-        Window stage = new Stage();
-        fileChooser.setTitle("Save Inventory");
-        fileChooser.setInitialFileName("myInventory");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TSV", "*.txt"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML", "*.html"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
-
-        try {
-            File file = fileChooser.showSaveDialog(stage);
-        } catch (Exception ex) {
-            System.out.println("error opening save dialog");
-        }
+        FileManagement writeFile = new FileManagement();
+        //Call write function in file class
+        writeFile.save(inventoryList);
     }
 
     public void loadList(ActionEvent actionEvent) {
         FileManagement file = new FileManagement();
         //Call search function from fileManagement class
-        file.save();
+        file.load();
     }
 
     private void refresh() {
