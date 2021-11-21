@@ -3,6 +3,8 @@
  *  Copyright 2021 aidan earnest
  */
 
+import java.io.IOException;
+
 public class Item {
     private String serialNumber; // format as A-XXX-XXX-XXX
     private String name;
@@ -38,14 +40,14 @@ public class Item {
         this.setValue(value);
     }
 
-    public void add(String serialField, String nameField, String valueField) {
+    public void add(String serialField, String nameField, String valueField) throws IOException {
         Controller controller = new Controller();
         ErrorMessage errorCheck = new ErrorMessage();
         //Take in items from textFields
         //Add item to TableView if under the size limit
         if (controller.inventoryList.size() < 1024) {
             //Confirm items meet restraints (else run errorMessage)
-            if (errorCheck.invalidInputCheck()) {
+            if (errorCheck.invalidInputCheck(serialField, nameField, Double.parseDouble(valueField))) {
                 //Display item in observable table view
                 controller.inventoryList.add(new Item(serialField, nameField, valueField));
                 controller.table.getItems().add(new Item(serialField, nameField, valueField));

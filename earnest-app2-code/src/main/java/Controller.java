@@ -3,7 +3,6 @@
  *  Copyright 2021 aidan earnest
  */
 
-import javafx.application.HostServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.awt.*;
 import java.io.File;
@@ -64,6 +66,9 @@ public class Controller implements Initializable{
 
     ObservableList<Item> inventoryList = FXCollections.observableArrayList();
 
+    @FXML
+    FileChooser fileChooser = new FileChooser();
+
     Boolean editorGate = false;
 
     @Override
@@ -72,24 +77,34 @@ public class Controller implements Initializable{
         serialColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        fileChooser.setInitialDirectory(new File("src\\main\\resources"));
     }
 
     //Controller will contain all call parameters
     //Allows for easier testing while only needing one class to control GUI
 
-    public void newItem (ActionEvent actionEvent) {
+    public void newItem (ActionEvent actionEvent) throws IOException {
         ErrorMessage errorCheck = new ErrorMessage();
+        String tempSerialNumber = "";
+        String tempName = "";
+        double tempDouble = 0;
         //Take in items from textFields
         //Add item to TableView
         if (inventoryList.size() < 1024) {
-
-            //Make Temp variables for easier conversions
-            String tempSerialNumber = serialNumberField.getText();
-            String tempName = nameField.getText();
-            double tempDouble = Double.parseDouble(valueField.getText());
+            try {
+                //Make Temp variables for easier conversions
+                tempSerialNumber = serialNumberField.getText();
+                tempName = nameField.getText();
+                tempDouble = Double.parseDouble(valueField.getText());
+            } catch (Exception e) {
+                System.out.println("Empty field");
+                refresh();
+                InvalidPopup.display();
+            }
 
             //Confirm items meet restraints (else run errorMessage)
-            if (errorCheck.invalidInputCheck()) {
+            if (errorCheck.invalidInputCheck(tempSerialNumber, tempName, tempDouble)) {
                 if (!editorGate) {
                     //Display item in observable table view
                     inventoryList.add(new Item(tempSerialNumber, tempName, String.format("$%.2f",tempDouble)));
@@ -99,7 +114,10 @@ public class Controller implements Initializable{
                     table.setItems(inventoryList);
                     editorGate = false;
                 }
+            } else {
+                InvalidPopup.display();
             }
+
         }
         //Update fields
         refresh();
@@ -158,7 +176,7 @@ public class Controller implements Initializable{
                 contains.add(new Item(item.getSerialNumber(), item.getName(), item.getValue()));
             }
             //Value contains check
-            else if (valueField.getText() != null && item.getValue().contains(valueField.getText())); {
+            else if (valueField.getText() != null && item.getValue().contains(valueField.getText())) {
                 contains.add(new Item(item.getSerialNumber(), item.getName(), item.getValue()));
             }
         }
@@ -205,7 +223,6 @@ public class Controller implements Initializable{
         table.setItems(serialSort);
     }
 
-
     public void manual(ActionEvent actionEvent) {
         //Open Manual
         URL resource = getClass().getResource("User's Manual.pdf");
@@ -220,10 +237,20 @@ public class Controller implements Initializable{
 
     }
 
+    @FXML
     public void saveList(ActionEvent actionEvent) {
-        FileManagement file = new FileManagement();
-        //Call search function from fileManagement class
-        file.save();
+        Window stage = new Stage();
+        fileChooser.setTitle("Save Inventory");
+        fileChooser.setInitialFileName("myInventory");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TSV", "*.txt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML", "*.html"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+
+        try {
+            File file = fileChooser.showSaveDialog(stage);
+        } catch (Exception ex) {
+            System.out.println("error opening save dialog");
+        }
     }
 
     public void loadList(ActionEvent actionEvent) {
