@@ -3,10 +3,6 @@
  *  Copyright 2021 aidan earnest
  */
 
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TextField;
-import org.w3c.dom.Text;
-
 public class Item {
     private String serialNumber; // format as A-XXX-XXX-XXX
     private String name;

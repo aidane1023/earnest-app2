@@ -27,19 +27,23 @@ public class Controller implements Initializable{
     @FXML
     Button search;
     @FXML
-    MenuButton sort;
+    MenuItem menuSortSerial;
     @FXML
-    MenuButton manual;
+    MenuItem menuSortName;
     @FXML
-    MenuButton load;
+    MenuItem menuSortValue;
     @FXML
-    MenuButton save;
+    MenuItem menuManual;
     @FXML
-    TextField serialNumberField = new TextField();
+    MenuItem menuLoad;
     @FXML
-    TextField nameField = new TextField();
+    MenuItem menuSave;
     @FXML
-    TextField valueField = new TextField();
+    TextField serialNumberField;
+    @FXML
+    TextField nameField;
+    @FXML
+    TextField valueField;
     @FXML
     TableView<Item> table;
     @FXML
@@ -56,9 +60,10 @@ public class Controller implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Set all necessary visual adjustments
-        serialColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("serialNumber"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-        valueColumn.setCellValueFactory(new PropertyValueFactory<Item, Double>("value"));
+        serialColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+
     }
 
     //Controller will contain all call parameters
@@ -69,9 +74,6 @@ public class Controller implements Initializable{
         //Take in items from textFields
         //Add item to TableView
         if (inventoryList.size() < 1024) {
-            serialNumberField.setText(serialNumberField.getText());
-            nameField.setText(nameField.getText());
-            valueField.setText(valueField.getText());
 
             //Make Temp variables for easier conversions
             String tempSerialNumber = serialNumberField.getText();
@@ -80,10 +82,10 @@ public class Controller implements Initializable{
 
             //Confirm items meet restraints (else run errorMessage)
             if (errorCheck.invalidInputCheck()) {
-                String tempValue = String.format("$%.2f", tempDouble);
                 //Display item in observable table view
-                inventoryList.add(new Item(tempSerialNumber, tempName, tempValue));
-                table.setItems(inventoryList);
+                inventoryList.add(new Item(tempSerialNumber, tempName, String.format("%.2f",tempDouble)));
+                String tempValue = String.format("$%.2f", tempDouble);
+                table.getItems().add(new Item(tempSerialNumber, tempName, tempValue));
             }
         }
         //Update fields
@@ -106,22 +108,18 @@ public class Controller implements Initializable{
     }
 
     public void editItem(ActionEvent actionEvent) {
-        Item item = new Item(null, null, null);
         ErrorMessage errorCheck = new ErrorMessage();
         //Requires a selection
         //Fill event fields
         try {
-            serialNumberField.setText(table.getItems().get(table.getSelectionModel().getSelectedIndex()).getSerialNumber());
             serialNumberField.setText(inventoryList.get(table.getSelectionModel().getSelectedIndex()).getSerialNumber());
             nameField.setText(inventoryList.get(table.getSelectionModel().getSelectedIndex()).getName());
-            valueField.setText((inventoryList.get(table.getSelectionModel().getSelectedIndex()).getValue()));
+            valueField.setText(inventoryList.get(table.getSelectionModel().getSelectedIndex()).getValue());
             editorGate = true;
         } catch (Exception e) {
             System.out.println("No Selection");
             errorCheck.invalidSelection();
         }
-        //Update fields
-        refresh();
     }
 
     public void clearList(ActionEvent actionEvent) {
