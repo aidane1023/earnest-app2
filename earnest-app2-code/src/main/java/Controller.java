@@ -84,8 +84,7 @@ public class Controller implements Initializable{
             if (errorCheck.invalidInputCheck()) {
                 if (!editorGate) {
                     //Display item in observable table view
-                    inventoryList.add(new Item(tempSerialNumber, tempName, String.format("%.2f",tempDouble)));
-                    String tempValue = String.format("$%.2f", tempDouble);
+                    inventoryList.add(new Item(tempSerialNumber, tempName, String.format("$%.2f",tempDouble)));
                     table.setItems(inventoryList);
                 } else {
                     inventoryList.set(table.getSelectionModel().getSelectedIndex(), new Item(serialNumberField.getText(), nameField.getText(), valueField.getText()));
@@ -120,7 +119,8 @@ public class Controller implements Initializable{
         try {
             serialNumberField.setText(inventoryList.get(table.getSelectionModel().getSelectedIndex()).getSerialNumber());
             nameField.setText(inventoryList.get(table.getSelectionModel().getSelectedIndex()).getName());
-            valueField.setText(inventoryList.get(table.getSelectionModel().getSelectedIndex()).getValue());
+            String tempValueString = inventoryList.get(table.getSelectionModel().getSelectedIndex()).getValue().substring(1);
+            valueField.setText(tempValueString);
             editorGate = true;
         } catch (Exception e) {
             System.out.println("No Selection");
@@ -132,6 +132,7 @@ public class Controller implements Initializable{
         List list = new List(null);
         //Call clear function from List class
         emptyList();
+        refresh();
     }
 
     public void searchList(ActionEvent actionEvent) {
@@ -148,18 +149,40 @@ public class Controller implements Initializable{
     }
 
     public void sortAZ(ActionEvent actionEvent) {
-        //Pass parameter a-z
-        sortList("AZ");
+        ObservableList<Item> nameSort = FXCollections.observableArrayList();
+        nameSort.addAll(inventoryList);
+        nameSort.sort(new Comparator<Item>() {
+            @Override
+            public int compare(Item u1, Item u2) {
+                return u1.getName().compareTo(u2.getName());
+            }
+        });
+        table.setItems(nameSort);
+
     }
 
     public void sort321(ActionEvent actionEvent) {
-        //Pass parameter 321
-        sortList("321");
+        ObservableList<Item> valueSort = FXCollections.observableArrayList();
+        valueSort.addAll(inventoryList);
+        valueSort.sort(new Comparator<Item>() {
+            @Override
+            public int compare(Item u1, Item u2) {
+                return u1.getValue().compareTo(u2.getValue());
+            }
+        });
+        table.setItems(valueSort);
     }
 
     public void sortSerial(ActionEvent actionEvent) {
-        //Pass parameter serial
-        sortList("Serial");
+        ObservableList<Item> serialSort = FXCollections.observableArrayList();
+        serialSort.addAll(inventoryList);
+        serialSort.sort(new Comparator<Item>() {
+            @Override
+            public int compare(Item u1, Item u2) {
+                return u1.getSerialNumber().compareTo(u2.getSerialNumber());
+            }
+        });
+        table.setItems(serialSort);
     }
 
     public void manual(ActionEvent actionEvent) {
@@ -190,6 +213,7 @@ public class Controller implements Initializable{
         //Update display
         table.setItems(inventoryList);
     }
+
 
     public void sortList(String parameter) {
         List list = new List(null);
