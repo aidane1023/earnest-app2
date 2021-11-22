@@ -79,7 +79,7 @@ class InvalidPopup {
 }
 
 class List {
-    + clear()
+    + void clear()
 }
 
 class Item {

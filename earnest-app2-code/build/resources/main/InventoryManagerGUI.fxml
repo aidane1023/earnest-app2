@@ -34,6 +34,7 @@
                   <MenuItem fx:id="menuSortSerial" mnemonicParsing="false" onAction="#sortSerial" text="By Serial #" />
                   <MenuItem fx:id="menuSortName" mnemonicParsing="false" onAction="#sortAZ" text="By Name" />
               <MenuItem fx:id="menuSortValue" mnemonicParsing="false" onAction="#sort321" text="By Value" />
+                  <MenuItem fx:id="menuSortOriginal" mnemonicParsing="false" onAction="#sortOriginal" text="Original" />
             </items>
           </Menu>
         </menus>

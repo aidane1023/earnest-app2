@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ItemTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-11-22T01:12:28" hostname="DESKTOP-BKLQ23J" time="0.016">
+<testsuite name="ItemTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-11-22T03:23:05" hostname="DESKTOP-BKLQ23J" time="0.015">
   <properties/>
-  <testcase name="test_toStringTab()" classname="ItemTest" time="0.011"/>
-  <testcase name="test_toString()" classname="ItemTest" time="0.002"/>
-  <testcase name="test_EventCreate()" classname="ItemTest" time="0.001"/>
+  <testcase name="test_toStringTab()" classname="ItemTest" time="0.012"/>
+  <testcase name="test_toString()" classname="ItemTest" time="0.001"/>
+  <testcase name="test_EventCreate()" classname="ItemTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

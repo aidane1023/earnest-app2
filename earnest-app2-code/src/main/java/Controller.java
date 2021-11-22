@@ -100,8 +100,12 @@ public class Controller implements Initializable{
             if (errorCheck.invalidInputCheck(tempSerialNumber, tempName, tempDouble, inventoryList)) {
                 if (!editorGate) {
                     //Display item in observable table view
-                    inventoryList.add(new Item(tempSerialNumber, tempName, String.format("$%.2f",tempDouble)));
-                    table.setItems(inventoryList);
+                    try {
+                        inventoryList.add(new Item(tempSerialNumber, tempName, String.format("$%.2f",Double.parseDouble(valueField.getText()))));
+                        table.setItems(inventoryList);
+                    } catch (Exception e) {
+                        System.out.println("invalid input");
+                    }
                 } else {
                     inventoryList.set(table.getSelectionModel().getSelectedIndex(), new Item(serialNumberField.getText(), nameField.getText(), valueField.getText()));
                     table.setItems(inventoryList);

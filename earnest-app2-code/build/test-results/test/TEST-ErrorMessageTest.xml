@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ErrorMessageTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-22T01:12:28" hostname="DESKTOP-BKLQ23J" time="0.039">
+<testsuite name="ErrorMessageTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-22T03:23:05" hostname="DESKTOP-BKLQ23J" time="0.051">
   <properties/>
-  <testcase name="test_serialFormat()" classname="ErrorMessageTest" time="0.039"/>
+  <testcase name="test_serialFormat()" classname="ErrorMessageTest" time="0.051"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
