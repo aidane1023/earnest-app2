@@ -1,0 +1,5 @@
+{
+	"Inventory" : [
+		{"serialNumber": "A-111-111-111", "name": "Test", "value": "$1.00" }
+	]
+}

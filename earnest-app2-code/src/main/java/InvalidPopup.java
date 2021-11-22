@@ -11,7 +11,7 @@ public class InvalidPopup {
 
     public static void display()
     {
-        Stage popupwindow=new Stage();
+        Stage popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Invalid Input Warning");

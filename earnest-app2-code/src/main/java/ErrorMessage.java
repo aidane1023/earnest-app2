@@ -3,33 +3,30 @@
  *  Copyright 2021 aidan earnest
  */
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
-import java.io.IOException;
 import java.util.Objects;
-
 
 public class ErrorMessage {
 
     @FXML
-    public Boolean invalidInputCheck(String serialNumber, String name, Double value) {
+    public Boolean invalidInputCheck(String serialNumber, String name, Double value, ObservableList<Item> inventoryList) {
         //Ensure parameters are met
-        return serialFormat(serialNumber) && name.length() >= 2 && name.length() <= 256 && value >= 0;
+        return serialFormat(serialNumber, inventoryList) && name.length() >= 2 && name.length() <= 256 && value >= 0;
     }
 
-    private boolean serialFormat(String serialNumber) {
-            if (serialNumber.length() == 13) {
-                return serialNumber.matches("[a-zA-Z]-[a-zA-Z_0-9]+-[a-zA-Z_0-9]+-[a-zA-Z_0-9]+");
+    public boolean serialFormat(String serialNumber, ObservableList<Item> inventoryList) {
+        if (serialNumber.length() == 13 && serialNumber.matches("[a-zA-Z]-[a-zA-Z_0-9]+-[a-zA-Z_0-9]+-[a-zA-Z_0-9]+")) {
+            for (Item item : inventoryList) {
+                if (Objects.equals(item.getSerialNumber(), serialNumber)) {
+                    return false;
+                }
             }
-            else {
-                return false;
-            }
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

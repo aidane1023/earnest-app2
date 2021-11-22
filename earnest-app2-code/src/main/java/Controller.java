@@ -13,12 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -43,6 +39,8 @@ public class Controller implements Initializable{
     MenuItem menuSortName;
     @FXML
     MenuItem menuSortValue;
+    @FXML
+    MenuItem menuSortOriginal;
     @FXML
     MenuItem menuManual;
     @FXML
@@ -99,7 +97,7 @@ public class Controller implements Initializable{
             }
 
             //Confirm items meet restraints (else run errorMessage)
-            if (errorCheck.invalidInputCheck(tempSerialNumber, tempName, tempDouble)) {
+            if (errorCheck.invalidInputCheck(tempSerialNumber, tempName, tempDouble, inventoryList)) {
                 if (!editorGate) {
                     //Display item in observable table view
                     inventoryList.add(new Item(tempSerialNumber, tempName, String.format("$%.2f",tempDouble)));
@@ -112,7 +110,6 @@ public class Controller implements Initializable{
             } else {
                 InvalidPopup.display();
             }
-
         }
         //Update fields
         refresh();
@@ -146,9 +143,11 @@ public class Controller implements Initializable{
     }
 
     public void clearList(ActionEvent actionEvent) {
-        List list = new List(null);
+        List list = new List();
         //Call clear function from List class
-        emptyList();
+        list.clear(inventoryList);
+        //Update display
+        table.setItems(inventoryList);
         refresh();
     }
 
@@ -214,6 +213,10 @@ public class Controller implements Initializable{
         table.setItems(serialSort);
     }
 
+    public void sortOriginal(ActionEvent actionEvent) {
+        table.setItems(inventoryList);
+    }
+
     public void manual(ActionEvent actionEvent) {
         //Open Manual
         URL resource = getClass().getResource("User's Manual.pdf");
@@ -237,7 +240,7 @@ public class Controller implements Initializable{
     public void loadList(ActionEvent actionEvent) {
         FileManagement file = new FileManagement();
         //Call search function from fileManagement class
-        file.load();
+        file.load(inventoryList);
     }
 
     private void refresh() {
@@ -245,12 +248,4 @@ public class Controller implements Initializable{
         nameField.setText(null);
         valueField.setText(null);
     }
-
-    public void emptyList() {
-        //Clear all events from list
-        inventoryList.remove(0, inventoryList.size());
-        //Update display
-        table.setItems(inventoryList);
-    }
-
 }

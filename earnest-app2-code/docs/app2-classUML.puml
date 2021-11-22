@@ -7,12 +7,13 @@ class List
 class Item
 class ErrorMessage
 class FileManagement
+class InvalidPopup
 
 InventoryManagementApplication -- Controller
 Controller -- List
 Controller -- Item
-Item -- ErrorMessage
-List -- ErrorMessage
+Controller -- ErrorMessage
+Controller -- InvalidPopup
 Controller -- FileManagement
 
 
@@ -27,16 +28,20 @@ class Controller {
     - Button edit
     - Button clear
     - Button search
-    - MenuButton sort
-    - MenuButton manual
-    - MenuButton load
-    - MenuButton save
+    - MenuItem menuSortSerial
+    - MenuItem menuSortName
+    - MenuItem menuSortValue
+    - MenuItem menuSortOriginal
+    - MenuItem menuManual
+    - MenuItem menuLoad
+    - MenuItem menuSave
     - TextField serialNumber
     - TextField name
     - TextField value
-    - TableView<Item> List
+    - TableView<Item> table
     - ObservableTable<Item> inventoryList
     - Boolean editorGate
+    + initialize(url, resourceBundle)
     + newItem()
     + deleteItem()
     + editItem()
@@ -45,7 +50,7 @@ class Controller {
     + sortAZ()
     + sort321()
     + sortSerial()
-    + sortList()
+    + sortOriginal()
     + manual()
     + saveList()
     + loadList()
@@ -53,21 +58,27 @@ class Controller {
 }
 
 class FileManagement {
-    save()
-    load()
+    - FileChooser fileChooser
+    + save(inventoryList)
+    + load(inventoryList)
+    + loadTSV(file, inventoryList)
+    + loadHTML(file, inventoryList)
+    + loadJSON(file, inventoryList)
+    + writeTSV(file, inventoryList)
+    + writeHTML(file, inventoryList)
+    + writeJSON(file, inventoryList)
 }
 
 class ErrorMessage {
-    invalidInputCheck()
+    + invalidInputCheck(serialNumber, name, value, inventoryList)
+    + serialFormat(serialNumber, inventoryList)
+}
+
+class InvalidPopup {
+    + display()
 }
 
 class List {
-    - Item[] inventory
-    + getInventory()
-    + setInventory()
-    + List(inventory)
-    + sort()
-    + search()
     + clear()
 }
 
@@ -82,8 +93,7 @@ class Item {
     + setName()
     + setValue()
     + Item(serialNumber, name, value)
-    + add()
-    + delete()
-    + edit()
+    + toStringTab()
+    + toString()
 }
 @enduml
